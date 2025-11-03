@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Header scroll effect
     const header = document.querySelector('header');
-    let lastScroll = 0;
 
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset;
@@ -76,8 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
             header.style.background = '#ffffff';
             header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
         }
-
-        lastScroll = currentScroll;
     });
 
     // Form validation and submission
@@ -139,6 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification(`Viewing: ${title}`, 'info');
         });
     });
+
+    // Year update for footer
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
 });
 
 // Helper function to validate email
@@ -212,11 +215,3 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-// Year update for footer
-document.addEventListener('DOMContentLoaded', function() {
-    const yearElement = document.getElementById('current-year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
-    }
-});
