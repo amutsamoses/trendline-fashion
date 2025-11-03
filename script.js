@@ -38,7 +38,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Active navigation link based on scroll position
-window.addEventListener('scroll', () => {
+// Header shadow on scroll
+// Parallax effect for hero section
+const header = document.querySelector('.header');
+const hero = document.querySelector('.hero');
+let ticking = false;
+
+function updateOnScroll() {
+    // Active navigation
     let current = '';
     const sections = document.querySelectorAll('section[id]');
     
@@ -56,15 +63,30 @@ window.addEventListener('scroll', () => {
             link.classList.add('active');
         }
     });
-});
 
-// Header shadow on scroll
-const header = document.querySelector('.header');
-window.addEventListener('scroll', () => {
+    // Header shadow
     if (window.scrollY > 100) {
         header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
     } else {
         header.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+    }
+
+    // Parallax effect
+    if (hero) {
+        const scrolled = window.pageYOffset;
+        const parallaxSpeed = 0.5;
+        hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
+    }
+
+    ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            updateOnScroll();
+        });
+        ticking = true;
     }
 });
 
@@ -116,11 +138,7 @@ cards.forEach(card => observer.observe(card));
 
 // Page load animation
 window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
+    document.body.classList.add('loaded');
 });
 
 // Add click tracking for collection links (for analytics)
@@ -133,16 +151,6 @@ collectionLinks.forEach(link => {
         // Here you would typically send analytics data
         alert(`Viewing ${collectionTitle} - This would navigate to the collection page.`);
     });
-});
-
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const scrolled = window.pageYOffset;
-        const parallaxSpeed = 0.5;
-        hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-    }
 });
 
 // Dynamic year update in footer
